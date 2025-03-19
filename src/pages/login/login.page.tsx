@@ -5,6 +5,7 @@ import { Button } from 'primereact/button';
 
 export const LoginPage = () => {
     const sendPassword = () => {
+        // servise.login...
         window.location.href = "/chooseUser";
     }
 

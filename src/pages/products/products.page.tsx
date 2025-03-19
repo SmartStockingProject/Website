@@ -7,13 +7,9 @@ import { Button } from 'primereact/button';
 import 'primereact/resources/themes/saga-blue/theme.css';
 import 'primereact/resources/primereact.min.css';
 import 'primeicons/primeicons.css';
+import { DataTableRowEditCompleteEvent } from 'primereact/datatable';
+import { Product } from '../../models/product.model';
 
-interface Product {
-    id: number;
-    name: string;
-    category: string;
-    price: number;
-}
 
 const ProductsPage: React.FC = () => {
     const [products, setProducts] = useState<Product[]>([]);
@@ -23,37 +19,85 @@ const ProductsPage: React.FC = () => {
     useEffect(() => {
         // Mock data
         setProducts([
-            { id: 1, name: 'עט פיילוט 0.4', category: 'WritingInstruments', price: 100 },
-            { id: 2, name: 'מרקר צהוב', category: 'WritingInstruments', price: 50 },
-            { id: 3, name: 'מחשבון מדעי', category: 'Electronics', price: 200 },
-            { id: 4, name: 'חבילת דפי צילום A4', category: 'Paperwork', price: 300 },
-             { id: 1, name: 'חפיסת צבעי פסטל', category: 'Electronics', price: 100 },
-            { id: 2, name: 'לורד לוח ארטליין', category: 'WritingInstruments', price: 50 },
-            { id: 3, name: 'מחשבון רגיל', category: 'Electronics', price: 200 },
-            { id: 4, name: 'חבילת דפי צילום A3', category: 'Paperwork', price: 300 },
+            {
+                id: "1", barkod: "123456", name: 'עט פיילוט 0.4', class: 'WritingInstruments', consumerPrice: 8,
+                importerPrice: 0,
+                quantity: 0,
+            },            {
+                id: "123", barkod: "444", name: 'עט פיילוט 0.6', class: 'WritingInstruments', consumerPrice: 10,
+                importerPrice: 0,
+                quantity: 0,
+            },            {
+                id: "3", barkod: "555", name: 'חבילת צבעי פסטל', class: 'WritingInstruments', consumerPrice: 100,
+                importerPrice: 0,
+                quantity: 0,
+            },            {
+                id: "31", barkod: "222", name: 'חבילת דפי צילום A4', class: 'Paperwork', consumerPrice: 100,
+                importerPrice: 0,
+                quantity: 0,
+            }, 
         ]);
     }, []);
 
     const categories = [
         { label: 'All', value: null },
+        { label: 'WritingInstruments', value: 'WritingInstruments' },
         { label: 'Electronics', value: 'Electronics' },
-        { label: 'Clothing', value: 'Clothing' },
-        { label: 'Furniture', value: 'Furniture' },
+        { label: 'Paperwork', value: 'Paperwork' },
     ];
 
     const onCategoryChange = (e: { value: string | null }) => {
         setSelectedCategory(e.value);
     };
 
+
+    const onRowEditComplete = (e: DataTableRowEditCompleteEvent) => {
+        const updatedProducts = [...products];
+        const { newData, index } = e.data as { newData: Product; index: number };
+        updatedProducts[index] = newData;
+        setProducts(updatedProducts);
+    };
+
+    const textEditor = (options: any) => {
+        return (
+            <InputText
+                type="text"
+                value={options.value}
+                onChange={(e) => options.editorCallback(e.target.value)}
+            />
+        );
+    };
+
+    const categoryEditor = (options: any) => {
+        return (
+            <Dropdown
+                value={options.value}
+                options={categories}
+                onChange={(e) => options.editorCallback(e.value)}
+                placeholder="בחר מחלקה"
+            />
+        );
+    };
+
+    const priceEditor = (options: any) => {
+        return (
+            <InputText
+                type="number"
+                value={options.value}
+                onChange={(e) => options.editorCallback(parseFloat(e.target.value))}
+            />
+        );
+    };
+
     const filteredProducts = products.filter((product) => {
         return (
-            (!selectedCategory || product.category === selectedCategory) &&
-            (!globalFilter || product.name.toLowerCase().includes(globalFilter.toLowerCase()))
+            (!selectedCategory || product.class === selectedCategory) &&
+            (!globalFilter || product.name!.toLowerCase().includes(globalFilter.toLowerCase()))
         );
     });
 
     return (
-        <div className="products-page">
+        <div className="products-page" style={{ direction: "rtl" }}>
             <h1>מוצרים בחנות</h1>
             <div className="p-grid p-align-center p-justify-between" style={{ marginBottom: '1rem' }}>
                 <div className="p-col-6">
@@ -74,12 +118,57 @@ const ProductsPage: React.FC = () => {
                     />
                 </div>
             </div>
-            <DataTable value={filteredProducts} paginator rows={5} sortMode="single">
-                <Column field="id" header="ברקוד" sortable></Column>
-                <Column field="name" header="שם" sortable></Column>
-                <Column field="category" header="קטגוריה" sortable></Column>
-                <Column field="price" header="מחיר" sortable></Column>
-            </DataTable>
+            <div style={{ overflowX: 'auto' }}>
+                <DataTable
+                    value={filteredProducts}
+                    paginator
+                    rows={5}
+                    sortMode="single"
+                    editMode="row"
+                    onRowEditComplete={onRowEditComplete}
+                    style={{ minWidth: '1200px' }}
+                >
+                    <Column field="barkod" header="ברקוד" sortable editor={(options) => textEditor(options)}></Column>
+                    <Column field="name" header="שם" sortable editor={(options) => textEditor(options)}></Column>
+                    <Column
+                        field="class"
+                        header="מחלקה"
+                        sortable
+                        editor={(options) => categoryEditor(options)}
+                    ></Column>
+                    <Column
+                        field="consumerPrice"
+                        header="מחיר לצרכן"
+                        sortable
+                        editor={(options) => priceEditor(options)}
+                    ></Column>
+                    <Column
+                        field="importerPrice"
+                        header="מחיר יבואן"
+                        sortable
+                        editor={(options) => priceEditor(options)}
+                    ></Column>
+                    <Column
+                        field="quantity"
+                        header="כמות במלאי"
+                        sortable
+                        editor={(options) => priceEditor(options)}
+                    ></Column>
+                    <Column
+                        field="user"
+                        header="משתמש"
+                        sortable
+                        editor={(options) => textEditor(options)}
+                    ></Column>
+                    <Column
+                        field="date"
+                        header="תאריך ספירה"
+                        sortable
+                        // editor={(options) => dateEditor(options)}
+                    ></Column>
+                    <Column rowEditor headerStyle={{ width: '7rem' }} bodyStyle={{ textAlign: 'center' }}></Column>
+                </DataTable>
+            </div>
         </div>
     );
 };
