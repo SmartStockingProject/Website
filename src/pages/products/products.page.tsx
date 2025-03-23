@@ -45,11 +45,9 @@ const ProductsPage: React.FC = () => {
         { label: 'Electronics', value: 'Electronics' },
         { label: 'Paperwork', value: 'Paperwork' },
     ];
-
     const onCategoryChange = (e: { value: string | null }) => {
         setSelectedCategory(e.value);
     };
-
 
     const onRowEditComplete = (e: DataTableRowEditCompleteEvent) => {
         const updatedProducts = [...products];
@@ -64,6 +62,7 @@ const ProductsPage: React.FC = () => {
                 type="text"
                 value={options.value}
                 onChange={(e) => options.editorCallback(e.target.value)}
+                style={{ width: '100%' }}
             />
         );
     };
@@ -75,6 +74,7 @@ const ProductsPage: React.FC = () => {
                 options={categories}
                 onChange={(e) => options.editorCallback(e.value)}
                 placeholder="בחר מחלקה"
+                style={{ width: '100%' }}
             />
         );
     };
@@ -85,6 +85,7 @@ const ProductsPage: React.FC = () => {
                 type="number"
                 value={options.value}
                 onChange={(e) => options.editorCallback(parseFloat(e.target.value))}
+                style={{ width: '100%' }}
             />
         );
     };
@@ -105,16 +106,17 @@ const ProductsPage: React.FC = () => {
                         value={globalFilter}
                         onChange={(e) => setGlobalFilter(e.target.value)}
                         placeholder="חיפוש לפי שם מוצר"
-                        style={{ width: '100%' }}
+                        style={{ width: '20%' }}
                     />
                 </div>
+                <br />
                 <div className="p-col-3">
                     <Dropdown
                         value={selectedCategory}
                         options={categories}
                         onChange={onCategoryChange}
                         placeholder="בחר קטגוריה"
-                        style={{ width: '100%' }}
+                        style={{ width: '20%' }}
                     />
                 </div>
             </div>
@@ -126,7 +128,7 @@ const ProductsPage: React.FC = () => {
                     sortMode="single"
                     editMode="row"
                     onRowEditComplete={onRowEditComplete}
-                    style={{ minWidth: '1200px' }}
+                    style={{ minWidth: '1200px', tableLayout: 'fixed' }}
                 >
                     <Column field="barkod" header="ברקוד" sortable editor={(options) => textEditor(options)}></Column>
                     <Column field="name" header="שם" sortable editor={(options) => textEditor(options)}></Column>
@@ -170,7 +172,6 @@ const ProductsPage: React.FC = () => {
                 </DataTable>
             </div>
         </div>
-    );
-};
+    ) }
 
 export default ProductsPage;

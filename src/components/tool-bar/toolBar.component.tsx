@@ -5,14 +5,13 @@ import { Menubar } from 'primereact/menubar';
 import logo from '../../assets/logo.JPG';
 
 const ToolBarComponent: React.FC = () => {
-    // const logo = <img src="../../assets/logo.JPG" alt="Logo" style={{ height: '40px' }} />;
     const routes = [
         { label: 'בית', icon: 'pi pi-home', command: () => window.location.href = '/' },
         { label: 'מוצרים', icon: 'pi pi-info-circle', command: () => window.location.href = '/products' },
         { label: 'משתמשים', icon: 'pi pi-envelope', command: () => window.location.href = '/chooseUser' }
     ];
-    const usernmae = localStorage.getItem('user') ? JSON.parse(localStorage.getItem('user') as string).name : "לא מחובר";
-    const user = <Button label={usernmae} icon="pi pi-user" className="p-button-text" />;
+    const username = localStorage.getItem('user') ? JSON.parse(localStorage.getItem('user') as string).name : "לא מחובר";
+    const user = <Button label={username} icon="pi pi-user" className="p-button-text" />;
 
     const leftContents = (
         <div style={{ display: 'flex', alignItems: 'center' }}>
@@ -25,8 +24,47 @@ const ToolBarComponent: React.FC = () => {
     );
 
     const rightContents = (
-        <div style={{ display: 'flex', alignItems: 'center' }}>
-            {user}
+        <div style={{ display: 'flex', alignItems: 'center', position: 'relative' }}>
+            <Button
+            label={username}
+            icon="pi pi-user"
+            className="p-button-text"
+            onClick={(e) => {
+                const menu = document.getElementById('user-menu');
+                if (menu) {
+                menu.style.display = menu.style.display === 'none' || menu.style.display === '' ? 'block' : 'none';
+                }
+            }}
+            />
+            <div
+            id="user-menu"
+            style={{
+                display: 'none',
+                position: 'absolute',
+                top: '100%',
+                right: 0,
+                backgroundColor: 'white',
+                boxShadow: '0px 4px 6px rgba(0, 0, 0, 0.1)',
+                borderRadius: '4px',
+                zIndex: 1000,
+            }}
+            >
+            <Button
+                label="התנתק"
+                className="p-button-text"
+                onClick={() => {
+                localStorage.removeItem('user');
+                window.location.href = '/';
+                }}
+                style={{ width: '100%' }}
+            />
+            <Button
+                label= "החלף משתמש"
+                className="p-button-text"
+                onClick={() => window.location.href = '/chooseUser'}
+                style={{ width: '100%' }}
+            />
+            </div>
         </div>
     );
 
