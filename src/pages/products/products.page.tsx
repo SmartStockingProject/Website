@@ -90,6 +90,17 @@ const ProductsPage: React.FC = () => {
         );
     };
 
+    const dateEditor = (options: any) => {
+        return (
+            <InputText
+                type="date"
+                value={options.value}
+                onChange={(e) => options.editorCallback(parseFloat(e.target.value))}
+                style={{ width: '100%' }}
+            />
+        );
+    };
+
     const filteredProducts = products.filter((product) => {
         return (
             (!selectedCategory || product.class === selectedCategory) &&
@@ -166,7 +177,7 @@ const ProductsPage: React.FC = () => {
                         field="date"
                         header="תאריך ספירה"
                         sortable
-                        // editor={(options) => dateEditor(options)}
+                        editor={(options) => dateEditor(options)}
                     ></Column>
                     <Column rowEditor headerStyle={{ width: '7rem' }} bodyStyle={{ textAlign: 'center' }}></Column>
                 </DataTable>

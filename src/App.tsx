@@ -8,6 +8,7 @@ import 'primereact/resources/primereact.min.css';
 import ChooseUserPage from './pages/choose-user/choose-user.page';
 import ProductsPage from './pages/products/products.page';
 import 'primeicons/primeicons.css';
+import MultipleProductUploadPage from './pages/multiple-product-upload/multipleProductUpload.page';
 
 function App() {
   return (
@@ -18,6 +19,7 @@ function App() {
         <Route path="/login" element={<LoginPage />} />
         <Route path="/chooseUser" element={<ChooseUserPage />} />
         <Route path="/products" element={<ProductsPage />} />
+        <Route path="/uploadProducts" element={<MultipleProductUploadPage />} />
 
 
       </Routes>

@@ -8,7 +8,9 @@ const ToolBarComponent: React.FC = () => {
     const routes = [
         { label: 'בית', icon: 'pi pi-home', command: () => window.location.href = '/' },
         { label: 'מוצרים', icon: 'pi pi-info-circle', command: () => window.location.href = '/products' },
-        { label: 'משתמשים', icon: 'pi pi-envelope', command: () => window.location.href = '/chooseUser' }
+        { label: 'משתמשים', icon: 'pi pi-envelope', command: () => window.location.href = '/chooseUser' },
+        { label: 'העלאת מוצרים', icon: 'pi pi-upload', command: () => window.location.href = '/uploadProducts' }
+
     ];
     const username = localStorage.getItem('user') ? JSON.parse(localStorage.getItem('user') as string).name : "לא מחובר";
     const user = <Button label={username} icon="pi pi-user" className="p-button-text" />;
