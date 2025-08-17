@@ -5,11 +5,16 @@ import pluginReact from 'eslint-plugin-react';
 
 /** @type {import('eslint').Linter.Config[]} */
 export default [
-  { files: ['**/*.{js,mjs,cjs,ts,jsx,tsx}'] },
+  { 
+    files: [
+      // '**/*.{js,mjs,cjs,ts,jsx,tsx}'
+    ] 
+
+  },
   { languageOptions: { globals: { ...globals.browser, __REACT_DEVTOOLS_GLOBAL_HOOK__: 'readonly', module: 'readonly' } } },
-  pluginJs.configs.recommended,
-  ...tseslint.configs.recommended,
-  pluginReact.configs.flat.recommended,
+  // pluginJs.configs.recommended,
+  // ...tseslint.configs.recommended,
+  // pluginReact.configs.flat.recommended,
   {
     rules: {
       '@typescript-eslint/no-unused-vars': 'off',

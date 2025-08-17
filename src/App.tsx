@@ -15,13 +15,10 @@ function App() {
     <Router>
       <Routes>
       <Route path="*" element={<LoginPage />} />
-
         <Route path="/login" element={<LoginPage />} />
         <Route path="/chooseUser" element={<ChooseUserPage />} />
         <Route path="/products" element={<ProductsPage />} />
         <Route path="/uploadProducts" element={<MultipleProductUploadPage />} />
-
-
       </Routes>
     </Router>
   );
